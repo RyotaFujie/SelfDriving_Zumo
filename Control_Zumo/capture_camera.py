@@ -10,6 +10,8 @@ camera_id = 0
 delay = 1
 window_name = 'frame'
 
+cap = cv2.VideoCapture(camera_id)
+
 if not cap.isOpened():
     sys.exit()
 
