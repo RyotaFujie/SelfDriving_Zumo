@@ -10,9 +10,9 @@ def capture(cap, cont_capture, labels):
     if ret :
         print("captured")
         frame = cv2.flip(frame, -1)
+        frame = cv2.resize(frame, (80, 60))
         #cv2.imshow("test window", frame)
-        cv2.imwrite(f'../test/Zumo_testrun_{cont_capture}_{labels}.jpeg', frame)
-
+        cv2.imwrite(f'../dataset/Zumo_run01_{cont_capture}_{labels}.jpeg', frame)
 
 def main():
 
