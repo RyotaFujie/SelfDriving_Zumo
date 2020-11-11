@@ -1,7 +1,8 @@
 import pygame
 from pygame.locals import *
 import serial , time
-import cv2, os
+import cv2
+import sys
 
 def main():
 
