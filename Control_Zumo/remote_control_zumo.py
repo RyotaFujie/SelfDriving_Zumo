@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import serial , time
+import cv2, os
 
 def main():
 
@@ -24,9 +25,18 @@ def main():
     ser = serial.Serial('/dev/ttyACM0',9600)
     time.sleep(2)
 
+    # camera setup
+    camera_id = 0
+    cap = cv2.VideoCapture(camera_id)
+    if not cap.isOpened():
+        print("can not open camrea")
+        sys.exit()
+
     try:
         while True:
             for event in pygame.event.get():
+
+                # get controller input
                 if event.type == pygame.locals.JOYAXISMOTION:
                     #get joystick axes and calcurate level            
                     left = int(joystick.get_axis(1) * 10) * -1
@@ -40,19 +50,19 @@ def main():
                         right = 0
                     if right == 10:
                         right = 9
-                   
-                #print('L3: ',  left, ', R3: ', right)
 
-                #serial to arduino
+                # camera caputre and save labels
+                ret, frame = cap.read()
+                if ret :
+                    frame = cv2.flip(frame, -1)
+                    cv2.imshow("test window", frame)
+
+                # serial to arduino
                 val = left*10 + right
                 print(val)
                 valByte = val.to_bytes(1,'big')
                 ser.flush()
                 ser.write(valByte)
-#                 time.sleep(2)
-
-                #            left = 0
-                #            right = 0
 
     except( KeyboardInterrupt, SystemExit):
         ser.close()
