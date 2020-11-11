@@ -59,6 +59,7 @@ def main():
                 if n == cycle :
                     n = 0
                     ret, frame = cap.read()
+                    print(ret)
                     frame = cv2.flip(frame, -1)
                     cv2.imshow("test window", frame)
                 else:
