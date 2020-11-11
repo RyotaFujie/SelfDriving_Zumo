@@ -36,7 +36,8 @@ def main():
 
     try:
         n = 0 # loop count val
-        cycle = 10
+        cycle = 10 # capture cycle in loop
+        capcont = 0 # count capture num
         while True:
             for event in pygame.event.get():
 
@@ -59,9 +60,12 @@ def main():
                 if n == cycle :
                     n = 0
                     ret, frame = cap.read()
-                    print(ret)
+                    if ret :
+                        print("captured")
                     frame = cv2.flip(frame, -1)
-                    cv2.imshow("test window", frame)
+                    #cv2.imshow("test window", frame)
+                    cv2.imwrite("../test/Zumo_testrun_{capcont}_{left}_{right}.jpeg", frame)
+                    capcont += 1
                 else:
                     n += 1
 
