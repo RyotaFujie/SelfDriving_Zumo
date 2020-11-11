@@ -5,7 +5,7 @@ import cv2
 import sys
 import threading
 
-def capture(cap, labels):
+def capture(cap, cont_capture, labels):
     ret, frame = cap.read()
     if ret :
         print("captured")
@@ -82,7 +82,7 @@ def main():
                         if n == cycle :
                             n = 0
                             # 別のスレットでcaptureを実行
-                            t = threading.Thread(target=capture, args=([cap, val]))
+                            t = threading.Thread(target=capture, args=([cap, cont_capture, val]))
                             t.start()
                             cont_capture += 1
                         else:
