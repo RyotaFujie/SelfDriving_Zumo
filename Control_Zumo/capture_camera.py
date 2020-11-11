@@ -21,7 +21,7 @@ while True:
     # リサイズ
     #frame = cv2.resize(frame, size)
     #画像状反転
-    frame.flip()
+    frame = cv2.flip(frame, -1)
     cv2.imshow(window_name, frame)
     if cv2.waitKey(delay) & 0xFF == ord('q'):
         break
