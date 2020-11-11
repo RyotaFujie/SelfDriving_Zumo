@@ -80,9 +80,15 @@ def main():
                     if on_capture :
                         if n == cycle :
                             n = 0
-                            # 別のスレットでcaptureを実行
-                            t = threading.Thread(target=capture(left, right))
-                            t.start()
+                            
+                            # 書き込みが重くなる原因か検証
+                            ret, frame = cap.read()
+                            if ret :
+                                print("captured")
+                                frame = cv2.flip(frame, -1)
+
+                            #t = threading.Thread(target=capture(left, right))
+                            #t.start()
                             cont_capture += 1
                         else:
                             n += 1
