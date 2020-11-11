@@ -8,9 +8,9 @@ def capture(left, right):
     ret, frame = cap.read()
     if ret :
         print("captured")
-    frame = cv2.flip(frame, -1)
-    #cv2.imshow("test window", frame)
-    cv2.imwrite(f'../test/Zumo_testrun_{cont_capture}_{left}_{right}.jpeg', frame)
+        frame = cv2.flip(frame, -1)
+        #cv2.imshow("test window", frame)
+        cv2.imwrite(f'../test/Zumo_testrun_{cont_capture}_{left}_{right}.jpeg', frame)
 
 
 def main():
@@ -80,7 +80,15 @@ def main():
                     if on_capture :
                         if n == cycle :
                             n = 0
-                            capture(left, right)
+                            
+                            # 書き込みが重くなる原因か検証
+                            ret, frame = cap.read()
+                            if ret :
+                                print("captured")
+                                frame = cv2.flip(frame, -1)
+
+                            #t = threading.Thread(target=capture(left, right))
+                            #t.start()
                             cont_capture += 1
                         else:
                             n += 1
