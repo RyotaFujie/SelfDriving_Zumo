@@ -3,14 +3,15 @@ from pygame.locals import *
 import serial , time
 import cv2
 import sys
+import threading
 
-def capture(left, right):
+def capture(labels):
     ret, frame = cap.read()
     if ret :
         print("captured")
         frame = cv2.flip(frame, -1)
         #cv2.imshow("test window", frame)
-        cv2.imwrite(f'../test/Zumo_testrun_{cont_capture}_{left}_{right}.jpeg', frame)
+        cv2.imwrite(f'../test/Zumo_testrun_{cont_capture}_{labels}.jpeg', frame)
 
 
 def main():
@@ -81,7 +82,7 @@ def main():
                         if n == cycle :
                             n = 0
                             # 別のスレットでcaptureを実行
-                            t = threading.Thread(target=capture(left, right))
+                            t = threading.Thread(target=capture(), args=([val]))
                             t.start()
                             cont_capture += 1
                         else:
