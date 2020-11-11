@@ -64,7 +64,9 @@ def main():
                         print("captured")
                     frame = cv2.flip(frame, -1)
                     #cv2.imshow("test window", frame)
-                    cv2.imwrite("../test/Zumo_testrun_{capcont}_{left}_{right}.jpeg", frame)
+                    # set labels
+                    path = "../test/Zumo_testrun_" + str(capcont) + "_" + str(left) + "_" + str(right)
+                    cv2.imwrite(path, frame)
                     capcont += 1
                 else:
                     n += 1
