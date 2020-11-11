@@ -4,6 +4,15 @@ import serial , time
 import cv2
 import sys
 
+def capture(left, right):
+    ret, frame = cap.read()
+    if ret :
+        print("captured")
+    frame = cv2.flip(frame, -1)
+    #cv2.imshow("test window", frame)
+    cv2.imwrite(f'../test/Zumo_testrun_{cont_capture}_{left}_{right}.jpeg', frame)
+
+
 def main():
 
     # ジョイスティックの初期化
@@ -59,7 +68,7 @@ def main():
                     if right == 10:
                         right = 9
 
-                    
+
                     # serial to arduino
                     val = left*10 + right
                     print(val)
@@ -71,12 +80,7 @@ def main():
                     if on_capture :
                         if n == cycle :
                             n = 0
-                            ret, frame = cap.read()
-                            if ret :
-                                print("captured")
-                            frame = cv2.flip(frame, -1)
-                            #cv2.imshow("test window", frame)
-                            cv2.imwrite(f'../test/Zumo_testrun_{cont_capture}_{left}_{right}.jpeg', frame)
+                            capture(left, right)
                             cont_capture += 1
                         else:
                             n += 1
