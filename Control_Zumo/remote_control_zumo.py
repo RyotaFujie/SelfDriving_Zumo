@@ -82,11 +82,11 @@ def main():
 
                 # get controller button input
                 elif event.type == pygame.locals.JOYBUTTONDOWN:
-                    if e.button == 3: # if press A button(bottom side)
+                    if event.button == 3: # if press A button(bottom side)
                         on_capture = True
                         print("on capture")
 
-                    if e.button == 0:
+                    if event.button == 0:
                         exit()
 
     except( KeyboardInterrupt, SystemExit):
