@@ -16,7 +16,12 @@ if not cap.isOpened():
     sys.exit()
 
 while True:
+	# frameに画像を保存
     ret, frame = cap.read()
+    # リサイズ
+    #frame = cv2.resize(frame, size)
+    #画像状反転
+    frame.flip()
     cv2.imshow(window_name, frame)
     if cv2.waitKey(delay) & 0xFF == ord('q'):
         break
