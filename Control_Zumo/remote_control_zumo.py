@@ -32,8 +32,11 @@ def main():
     if not cap.isOpened():
         print("can not open camrea")
         sys.exit()
+    print("camrea is opend")
 
     try:
+        n = 0 # loop count val
+        cycle = 10
         while True:
             for event in pygame.event.get():
 
@@ -53,10 +56,13 @@ def main():
                         right = 9
 
                 # camera caputre and save labels
-                ret, frame = cap.read()
-                if ret :
+                if n == cycle :
+                    n = 0
+                    ret, frame = cap.read()
                     frame = cv2.flip(frame, -1)
                     cv2.imshow("test window", frame)
+                else:
+                    n += 1
 
                 # serial to arduino
                 val = left*10 + right
