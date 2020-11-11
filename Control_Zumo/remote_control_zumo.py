@@ -35,13 +35,16 @@ def main():
     print("camrea is opend")
 
     try:
+        # using vals in loop
         n = 0 # loop count val
         cycle = 10 # capture cycle in loop
-        capcont = 0 # count capture num
-        while True:
-            for event in pygame.event.get():
+        cont_capture = 0 # count capture num
+        on_capture = False # start capture camera
 
-                # get controller input
+        while True:
+            for event in pygame.event.get():         
+
+                # get controller joystick input
                 if event.type == pygame.locals.JOYAXISMOTION:
                     #get joystick axes and calcurate level            
                     left = int(joystick.get_axis(1) * 10) * -1
@@ -56,25 +59,35 @@ def main():
                     if right == 10:
                         right = 9
 
-                # camera caputre and save labels
-                if n == cycle :
-                    n = 0
-                    ret, frame = cap.read()
-                    if ret :
-                        print("captured")
-                    frame = cv2.flip(frame, -1)
-                    #cv2.imshow("test window", frame)
-                    cv2.imwrite(f'../test/Zumo_testrun_{capcont}_{left}_{right}.jpeg', frame)
-                    capcont += 1
-                else:
-                    n += 1
+                    # camera caputre and save labels
+                    if on_capture :
+                        if n == cycle :
+                            n = 0
+                            ret, frame = cap.read()
+                            if ret :
+                                print("captured")
+                            frame = cv2.flip(frame, -1)
+                            #cv2.imshow("test window", frame)
+                            cv2.imwrite(f'../test/Zumo_testrun_{cont_capture}_{left}_{right}.jpeg', frame)
+                            cont_capture += 1
+                        else:
+                            n += 1
 
-                # serial to arduino
-                val = left*10 + right
-                print(val)
-                valByte = val.to_bytes(1,'big')
-                ser.flush()
-                ser.write(valByte)
+                    # serial to arduino
+                    val = left*10 + right
+                    print(val)
+                    valByte = val.to_bytes(1,'big')
+                    ser.flush()
+                    ser.write(valByte)
+
+                # get controller button input
+                elif event.type == pygame.locals.JOYBUTTONDOWN:
+                    if e.button == 3: # if press A button(bottom side)
+                        on_capture = True
+                        print("on capture")
+
+                    if e.button == 0:
+                        exit()
 
     except( KeyboardInterrupt, SystemExit):
         ser.close()
