@@ -82,7 +82,7 @@ def main():
                         if n == cycle :
                             n = 0
                             # 別のスレットでcaptureを実行
-                            t = threading.Thread(target=capture(), args=([val]))
+                            t = threading.Thread(target=capture, args=([val]))
                             t.start()
                             cont_capture += 1
                         else:
