@@ -59,6 +59,14 @@ def main():
                     if right == 10:
                         right = 9
 
+                    
+                    # serial to arduino
+                    val = left*10 + right
+                    print(val)
+                    valByte = val.to_bytes(1,'big')
+                    ser.flush()
+                    ser.write(valByte)
+
                     # camera caputre and save labels
                     if on_capture :
                         if n == cycle :
@@ -72,13 +80,6 @@ def main():
                             cont_capture += 1
                         else:
                             n += 1
-
-                    # serial to arduino
-                    val = left*10 + right
-                    print(val)
-                    valByte = val.to_bytes(1,'big')
-                    ser.flush()
-                    ser.write(valByte)
 
                 # get controller button input
                 elif event.type == pygame.locals.JOYBUTTONDOWN:
