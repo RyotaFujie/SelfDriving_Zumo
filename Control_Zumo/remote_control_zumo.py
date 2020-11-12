@@ -94,7 +94,7 @@ def main():
                     # camera caputre and save labels
                     if on_capture :
                         # 別のスレットでcaptureを実行
-                        t = threading.Thread(target=capture, args=([cap, cont_capture, steer]))
+                        t = threading.Thread(target=capture, args=([cap, cont_capture, steer + 10]))
                         t.start()
                         cont_capture += 1
 
