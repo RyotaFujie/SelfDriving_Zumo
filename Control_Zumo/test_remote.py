@@ -67,7 +67,7 @@ def main():
                         steer = (steer * -1 ) + 1# 0から9に変換
                         ctl = 90 + (9 - steer)
                     else:
-                        ctl = (9 - steer) + 9
+                        ctl = (9 - steer)*10 + 9
 
                     ctl += throttle
                     print(ctl)
