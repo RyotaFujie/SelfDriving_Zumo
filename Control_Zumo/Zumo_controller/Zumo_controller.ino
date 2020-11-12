@@ -8,12 +8,15 @@
  */
 
 #include <Wire.h>
-#include <ZumoShield.h>c
+#include <ZumoShield.h>
 
 #define LED_PIN 13
 
 ZumoMotors motors;
 byte readByte = 0;
+int speed = 0;
+int left = 0;
+int right = 0;
 
 void setup()
 {
@@ -25,6 +28,7 @@ void setup()
 }
 
 void loop() {
+
   //Get
   if (Serial.available() > 0) {
     readByte = Serial.read();
@@ -33,10 +37,17 @@ void loop() {
     speed = 0;
   }
   
-  speed = speed % 100;
-  int left = (speed / 10) * 28;
-  int right = (speed % 10) * 28;
+  int steer = speed % 100;
+  int throttle = speed / 100;
+  left = (steer / 10) * 28;
+  right = (steer % 10) * 28;
+//      right = (steer % 10) * 28;
+//  if (throttle == 1 ) {
+//      left = (steer / 10) * 28;
+//      right = (steer % 10) * 28;
+//  }
   //goForward(speed);
   motors.setSpeeds(left, right);
   
   Serial.flush();
+}

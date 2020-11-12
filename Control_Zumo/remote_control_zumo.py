@@ -62,22 +62,30 @@ def main():
 
                 # get controller joystick input
                 if event.type == pygame.locals.JOYAXISMOTION:
-                    #get joystick axes and calcurate level            
-                    left = int(joystick.get_axis(1) * 10) * -1
-                    if left < 0:
-                        left = 0
-                    if left == 10:
-                        left = 9
-                       
-                    right = int(joystick.get_axis(4) * 10) * -1
-                    if right < 0:
-                        right = 0
-                    if right == 10:
-                        right = 9
+                    #get joystick axes and calcurate level
+                    # throttle　control
+                    throttle = int(joystick.get_axis(1) * 10) * -1      
+                    if throttle > 0:
+                        throttle = 100
+                    elif throttle < 0:
+                        throttle = 200
+                    else:
+                        throttle = 0
+
+                    #steer control
+                    steer = int(joystick.get_axis(3) * 10) # -10から9   [-1 → -10], [0 → 9] の左右縦断階
+                    if 0 > steer:
+                        steer = (steer * -1 ) - 1# 0から9に変換
+                        ctl = (9 - steer) * 10 + 9
+                    else:
+                        ctl = 90 + (9 - steer)
+
+                    ctl += throttle
+                    print(ctl)
 
 
                     # serial to arduino
-                    val = left*10 + right
+                    val = ctl
                     print(val)
                     valByte = val.to_bytes(1,'big')
                     ser.flush()
