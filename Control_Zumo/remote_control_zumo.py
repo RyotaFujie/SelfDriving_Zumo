@@ -5,14 +5,14 @@ import cv2
 import sys
 import threading
 
-def capture(cap, cont_capture, labels):
+def capture(cap, cont_capture, label):
     ret, frame = cap.read()
     if ret :
         print("captured")
         frame = cv2.flip(frame, -1)
         frame = cv2.resize(frame, (80, 60))
         #cv2.imshow("test window", frame)
-        cv2.imwrite(f'../dataset/Zumo_run01_{cont_capture}_{labels}.jpeg', frame)
+        cv2.imwrite(f'../dataset/Zumo_run01_{cont_capture}_{label}.jpeg', frame)
 
 def main():
 
@@ -94,7 +94,7 @@ def main():
                     # camera caputre and save labels
                     if on_capture :
                         # 別のスレットでcaptureを実行
-                        t = threading.Thread(target=capture, args=([cap, cont_capture, val]))
+                        t = threading.Thread(target=capture, args=([cap, cont_capture, steer]))
                         t.start()
                         cont_capture += 1
 
