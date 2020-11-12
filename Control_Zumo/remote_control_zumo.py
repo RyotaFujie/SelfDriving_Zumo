@@ -72,6 +72,7 @@ def main():
 
                     #steer control
                     steer = int(joystick.get_axis(3) * 10) # -10から9   [-1 → -10], [0 → 9] の左右縦断階
+                    print(steer + 10)
                     if 0 > steer:
                         steer = (steer * -1 ) - 1# 0から9に変換
                         ctl = (9 - steer) * 10 + 9
@@ -81,7 +82,6 @@ def main():
                     if ctl == 99 :#直線になった瞬間に急加速してしまうのでスピード調整
                         ctl = 88
                     ctl += throttle
-                    print(steer + 10)
 
 
                     # serial to arduino
