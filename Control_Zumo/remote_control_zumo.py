@@ -51,8 +51,14 @@ def main():
         cont_capture = 0 # count capture num
         on_capture = False # start capture camera
 
+        start = time.time()
+
         while True:
-            for event in pygame.event.get():         
+            for event in pygame.event.get():
+
+                now = time.time()
+                if (start - now) < 0.3:
+                    continue
 
                 # get controller joystick input
                 if event.type == pygame.locals.JOYAXISMOTION:
