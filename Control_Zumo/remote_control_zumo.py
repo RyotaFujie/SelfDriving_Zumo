@@ -78,6 +78,8 @@ def main():
                     else:
                         ctl = 90 + (9 - steer)
 
+                    if ctl == 99 :#直線になった瞬間に急加速してしまうのでスピード調整
+                        ctl = 88
                     ctl += throttle
                     print(ctl)
 

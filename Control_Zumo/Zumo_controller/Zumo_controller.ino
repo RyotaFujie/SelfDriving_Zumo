@@ -29,25 +29,22 @@ void setup()
 
 void loop() {
 
-  //Get
+  //Get Serial
   if (Serial.available() > 0) {
     readByte = Serial.read();
    int speed = (int)readByte;
+   int run = speed / 100;
+   speed = speed % 100;
+   int left = (speed / 10) * 28;
+   int right = (speed % 10) * 28;
+   if (run < 1) {
+    left = 0;
+    right = 0
+   }
+    //goForward(speed);
+   motors.setSpeeds(left, right);
   }else {
-    speed = 0;
+    readByte = 0;
   }
-  
-  int steer = speed % 100;
-  int throttle = speed / 100;
-  left = (steer / 10) * 28;
-  right = (steer % 10) * 28;
-//      right = (steer % 10) * 28;
-//  if (throttle == 1 ) {
-//      left = (steer / 10) * 28;
-//      right = (steer % 10) * 28;
-//  }
-  //goForward(speed);
-  motors.setSpeeds(left, right);
-  
   Serial.flush();
 }
