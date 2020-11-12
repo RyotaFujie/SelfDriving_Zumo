@@ -72,7 +72,7 @@ def main():
 
                     #steer control
                     steer = int(joystick.get_axis(3) * 10) # -10から9   [-1 → -10], [0 → 9] の左右縦断階
-                    print(steer + 10)
+                    label = steer + 10
                     if 0 > steer:
                         steer = (steer * -1 ) - 1# 0から9に変換
                         ctl = (9 - steer) * 10 + 9
@@ -94,7 +94,7 @@ def main():
                     # camera caputre and save labels
                     if on_capture :
                         # 別のスレットでcaptureを実行
-                        t = threading.Thread(target=capture, args=([cap, cont_capture, steer + 10]))
+                        t = threading.Thread(target=capture, args=([cap, cont_capture, label]))
                         t.start()
                         cont_capture += 1
 
