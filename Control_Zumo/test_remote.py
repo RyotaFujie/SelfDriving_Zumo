@@ -54,9 +54,9 @@ def main():
                     #get joystick axes and calcurate level
                     # throttle　control
                     throttle = int(joystick.get_axis(1) * 10) * -1      
-                    if throttle > 2:
+                    if throttle > 0:
                         run = 100
-                    elif throttle < -2:
+                    elif throttle < 0:
                         run = 200
                     else:
                         run = 0
