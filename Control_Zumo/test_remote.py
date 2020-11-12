@@ -65,9 +65,9 @@ def main():
                     steer = int(joystick.get_axis(3) * 10) # -10から9   [-1 → -10], [0 → 9] の左右縦断階
                     if 0 > steer:
                         steer = (steer * -1 ) + 1# 0から9に変換
-                        ctl = 90 + (9 - steer)
+                        ctl = (9 - steer) * 10 + 9
                     else:
-                        ctl = (9 - steer)*10 + 9
+                        ctl = 90 + (9 - steer)
 
                     ctl += throttle
                     print(ctl)
