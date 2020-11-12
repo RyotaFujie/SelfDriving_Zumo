@@ -63,7 +63,7 @@ def main():
                     #steer control
                     steer = int(joystick.get_axis(3) * 10) # -10から9   [-1 → -10], [0 → 9] の左右縦断階
                     if 0 >= steer:
-                        speed = 90 + (9-curve)
+                        speed = 90 + (9-steer)
                     else:
                         (steer * -1) - 1 # 0から9に変換
                         speed = (9-steer) * 10 + 9
