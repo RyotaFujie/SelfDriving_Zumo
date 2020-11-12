@@ -57,8 +57,10 @@ def main():
             for event in pygame.event.get():
 
                 now = time.time()
-                if (start - now) < 0.3:
+                if (now - start) < 0.3:
                     continue
+                else:
+                    start = time.time()
 
                 # get controller joystick input
                 if event.type == pygame.locals.JOYAXISMOTION:
