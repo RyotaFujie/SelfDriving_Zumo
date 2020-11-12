@@ -51,15 +51,26 @@ def main():
 
                 # get controller joystick input
                 if event.type == pygame.locals.JOYAXISMOTION:
-                    #get joystick axes and calcurate level            
-                    if (int(joystick.get_axis(1) * 10) * -1) > 1:
-                        run = 1
+                    #get joystick axes and calcurate level
+                    # throttle　control
+                    throttle = int(joystick.get_axis(1) * 10) * -1      
+                    if throttle > 2:
+                        run = 100
+                    elif throttle < -2:
+                        run = 200
                     else:
                         run = 0
+                    #steer control
+                    steer = int(joystick.get_axis(3) * 10) # -10から9   [-1 → -10], [0 → 9] の左右縦断階
+                    if 0 >= steer:
+                        speed = 90 + (9-curve)
+                    else:
+                        (steer * -1) - 1 # 0から9に変換
+                        speed = (9-steer) * 10 + 9
 
-                    curve = int(joystick.get_axis(3) * 10)
+                    speed += throttle
 
-                    print(run, curve)
+                    print(speed)
 
                 # get controller button input
                 elif event.type == pygame.locals.JOYBTTONDOWN:
