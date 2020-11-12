@@ -60,17 +60,17 @@ def main():
                         throttle = 200
                     else:
                         throttle = 0
+
                     #steer control
                     steer = int(joystick.get_axis(3) * 10) # -10から9   [-1 → -10], [0 → 9] の左右縦断階
-                    if 0 >= steer:
-                        speed = 90 + (9-steer)
+                    if 0 > steer:
+                        steer = (steer * -1 ) + 1# 0から9に変換
+                        ctl = 90 + (9 - steer)
                     else:
-                        (steer * -1) - 1 # 0から9に変換
-                        speed = (9-steer) * 10 + 9
+                        ctl = (9 - steer) + 9
 
-                    speed += throttle
-
-                    print(speed)
+                    ctl += throttle
+                    print(ctl)
 
                 # get controller button input
                 elif event.type == pygame.locals.JOYBTTONDOWN:
