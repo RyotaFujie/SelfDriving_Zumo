@@ -57,7 +57,7 @@ def main():
             for event in pygame.event.get():
 
                 now = time.time()
-                if (now - start) < 0.3:
+                if (now - start) < 0.1:
                     continue
                 else:
                     start = time.time()
