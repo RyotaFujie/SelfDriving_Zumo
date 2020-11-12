@@ -67,8 +67,6 @@ def main():
                     throttle = int(joystick.get_axis(1) * 10) * -1      
                     if throttle > 0:
                         throttle = 100
-                    elif throttle < 0:
-                        throttle = 200
                     else:
                         throttle = 0
 
