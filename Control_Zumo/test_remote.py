@@ -55,11 +55,11 @@ def main():
                     # throttle　control
                     throttle = int(joystick.get_axis(1) * 10) * -1      
                     if throttle > 0:
-                        run = 100
+                        throttle = 100
                     elif throttle < 0:
-                        run = 200
+                        throttle = 200
                     else:
-                        run = 0
+                        throttle = 0
                     #steer control
                     steer = int(joystick.get_axis(3) * 10) # -10から9   [-1 → -10], [0 → 9] の左右縦断階
                     if 0 >= steer:
