@@ -46,8 +46,6 @@ def main():
 
     try:
         # using vals in loop
-        n = 0 # loop count val
-        cycle = 10 # capture cycle in loop
         cont_capture = 0 # count capture num
         on_capture = False # start capture camera
 
@@ -87,14 +85,10 @@ def main():
 
                     # camera caputre and save labels
                     if on_capture :
-                        if n == cycle :
-                            n = 0
-                            # 別のスレットでcaptureを実行
-                            t = threading.Thread(target=capture, args=([cap, cont_capture, val]))
-                            t.start()
-                            cont_capture += 1
-                        else:
-                            n += 1
+                        # 別のスレットでcaptureを実行
+                        t = threading.Thread(target=capture, args=([cap, cont_capture, val]))
+                        t.start()
+                        cont_capture += 1
 
                 # get controller button input
                 elif event.type == pygame.locals.JOYBUTTONDOWN:
