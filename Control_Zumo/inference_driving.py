@@ -143,7 +143,7 @@ def main():
 
         # vals that using in self driving
         mode_flags = [True, False, False]
-        NOMAL = 0
+        NORMAL = 0
         LEARNING = 1 # capture camera
         INFERENCE = 2
 
@@ -168,9 +168,9 @@ def main():
                 if event.button == 0: # end
                     exit()
 
-                elif event.button == 1: # nomal
-                    setMode(mode_flags, NOMAL)
-                    print("on Nomal Driving")
+                elif event.button == 1: # normal
+                    setMode(mode_flags, NORMAL)
+                    print("on Normal Driving")
 
                 elif event.button == 2: # learning (capture)
                     setMode(mode_flags, LEARNING)
@@ -182,7 +182,7 @@ def main():
                 continue # 次のイベントへスキップ
 
             # remoto control
-            if mode_flags[NOMAL] or mode_flags[LEARNING] :
+            if mode_flags[NORMAL] or mode_flags[LEARNING] :
                 # get controller joystick input
                 if event.type == pygame.locals.JOYAXISMOTION:
                     # throttle control
