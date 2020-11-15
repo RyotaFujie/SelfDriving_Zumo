@@ -16,7 +16,7 @@ def capture(cap, cont_capture, label):
 
 def setMode(mode_flags, index):
     # clear flag
-    for i in range(mode_flags):
+    for i in range(len(mode_flags)):
         mode[i] = False
 
     mode_flags[index] = True
