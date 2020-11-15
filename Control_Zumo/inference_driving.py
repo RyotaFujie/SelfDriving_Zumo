@@ -73,13 +73,13 @@ def main():
             else:
                 start = time.time()
 
-            print(mode_flags)
-
             # get event
             events = pygame.event.get()
             if len(events) == 0:
                 continue
             event = events[0]
+
+            print(mode_flags)
 
             # switch driving mode
             if event.type == pygame.locals.JOYBUTTONDOWN:
@@ -87,7 +87,7 @@ def main():
                     exit()
 
                 elif event.button == 1: # nomal
-                    mode_flags = setMode(mode_flags, NOMAL)
+                    setMode(mode_flags, NOMAL)
                     print("on Nomal Driving")
 
                 elif event.button == 2: # learning (capture)
