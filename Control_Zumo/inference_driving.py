@@ -14,6 +14,14 @@ def capture(cap, cont_capture, label):
         #cv2.imshow("test window", frame)
         cv2.imwrite(f'../dataset/Zumo_run01_{cont_capture}_{label}.jpeg', frame)
 
+def setMode(mode_flags, index)
+    # clear flag
+    for mode in mode_falgs:
+        mode = False
+
+    mode_falgs[index] = True
+    return mode_falgs
+
 def main():
 
     # ジョイスティックの初期化
@@ -45,32 +53,60 @@ def main():
     print("camrea is opend")
 
     try:
-        # using vals in loop
+        # vals that using in remoto control
         cont_capture = 0 # count capture num
-        on_capture = False # start capture camera
-
         start = time.time()
 
+        # vals that using in self driving
+        mode_flags = [True, False, False]
+        NOMAL = 0
+        LEARNING = 1 # capture camera
+        INFERENCE = 2
+
+
         while True:
-            for event in pygame.event.get():
 
-                now = time.time()
-                if (now - start) < 0.1:
-                    continue
-                else:
-                    start = time.time()
+            # interval
+            now = time.time()
+            if (now - start) < 0.1:
+                continue
+            else:
+                start = time.time()
 
+            # get event
+            event = pygame.event.get():
+            if evet == None:
+                continue
+
+            # switch driving mode
+            if event.type == pygame.locals.JOYBUTTONDOWN:
+                if event.button == 0: # end
+                    exit()
+
+                elif event.button == 1: # nomal
+                    mode_flags = setMode(mod_flags, NOMAL)
+                    print("on Nomal Driving")
+
+                elif event.button == 2: # learning (capture)
+                    mode_flags = setMode(mod_flags, LEARNING)
+                    print("on capture")
+
+                elif event.button == 3: # inference
+                    mode_flags = setMode(mod_flags, INFERENCE)
+                    print("on Self Driving")
+                continue # 次のイベントへスキップ
+
+            # remoto control
+            if mode_flags[NOMAL] or mode_flags[LEARNING] :
                 # get controller joystick input
                 if event.type == pygame.locals.JOYAXISMOTION:
-                    #get joystick axes and calcurate level
-                    # throttle　control
-                    throttle = int(joystick.get_axis(1) * 10) * -1      
-                    if throttle > 0:
+                    # throttle control
+                    throttle = int(joystick.get_axis(1) * 10) * -1   
+                    if throttle > 0
                         throttle = 100
                     else:
-                        throttle = 0
-
-                    #steer control
+                        throttle = 0   
+                    # steer control
                     steer = (int(joystick.get_axis(3) * 10)  / 2) * 2# -10から9   [-1 → -10], [0 → 9] を二つ飛ばしに変換
                     label = steer + 10
                     if 0 > steer:
@@ -82,30 +118,16 @@ def main():
                     if ctl == 99 :#直線になった瞬間に急加速してしまうのでスピード調整
                         ctl = 88
                     ctl += throttle
+                    print(ctl)
+                continue # 次のイベントへスキップ
+
+            # self driving
+            if mode_flags[INFERENCE] :
+                event.clear() # キュー内のイベントを削除
 
 
-                    # serial to arduino
-                    val = ctl
-                    print(val)
-                    valByte = val.to_bytes(1,'big')
-                    ser.flush()
-                    ser.write(valByte)
 
-                    # camera caputre and save labels
-                    if on_capture :
-                        # 別のスレットでcaptureを実行
-                        t = threading.Thread(target=capture, args=([cap, cont_capture, label]))
-                        t.start()
-                        cont_capture += 1
 
-                # get controller button input
-                elif event.type == pygame.locals.JOYBUTTONDOWN:
-                    if event.button == 3: # if press A button(bottom side)
-                        on_capture = True
-                        print("on capture")
-
-                    if event.button == 0:
-                        exit()
 
     except( KeyboardInterrupt, SystemExit):
         ser.close()
