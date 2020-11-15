@@ -78,7 +78,6 @@ def main():
             if len(events) == 0:
                 continue
             event = events[0]
-            print(len(events))
 
             # switch driving mode
             if event.type == pygame.locals.JOYBUTTONDOWN:
@@ -121,7 +120,7 @@ def main():
                         ctl = 88
                     ctl += throttle
                     ctl = int(ctl)
-                    # print(ctl)
+                    print(ctl)
                 continue # 次のイベントへスキップ
 
             # self driving
