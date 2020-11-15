@@ -74,7 +74,7 @@ def main():
                 start = time.time()
 
             # get event
-            event = pygame.event.get():
+            event = pygame.event.get()
             if evet == None:
                 continue
 
@@ -102,7 +102,7 @@ def main():
                 if event.type == pygame.locals.JOYAXISMOTION:
                     # throttle control
                     throttle = int(joystick.get_axis(1) * 10) * -1   
-                    if throttle > 0
+                    if throttle > 0:
                         throttle = 100
                     else:
                         throttle = 0   
