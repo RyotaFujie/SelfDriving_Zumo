@@ -75,7 +75,7 @@ def main():
 
             # get event
             event = pygame.event.get()
-            if evet == None:
+            if event == None:
                 continue
 
             # switch driving mode
