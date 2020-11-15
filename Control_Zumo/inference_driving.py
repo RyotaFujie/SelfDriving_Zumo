@@ -74,7 +74,7 @@ def main():
                 start = time.time()
 
             # get event
-            event = pygame.event.get()
+            event = pygame.event.get()[0]
             if event == None:
                 continue
 
