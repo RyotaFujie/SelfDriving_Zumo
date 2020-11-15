@@ -124,7 +124,7 @@ def main():
                 continue # 次のイベントへスキップ
 
             # self driving
-            # if mode_flags[INFERENCE] :
+            #  if mode_flags[INFERENCE] :
 
 
 
