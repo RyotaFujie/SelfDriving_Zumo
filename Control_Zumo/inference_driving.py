@@ -75,7 +75,7 @@ def main():
 
             # get event
             events = pygame.event.get()
-            if events == None:
+            if len(events) == 0:
                 continue
             event = events[0]
 
