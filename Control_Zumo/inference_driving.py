@@ -16,8 +16,8 @@ def capture(cap, cont_capture, label):
 
 def setMode(mode_flags, index):
     # clear flag
-    for mode in mode_flags:
-        mode = False
+    for i in range(mode_flags):
+        mode[i] = False
 
     mode_flags[index] = True
     return mode_flags
@@ -91,11 +91,11 @@ def main():
                     print("on Nomal Driving")
 
                 elif event.button == 2: # learning (capture)
-                    mode_flags = setMode(mode_flags, LEARNING)
+                    setMode(mode_flags, LEARNING)
                     print("on capture")
 
                 elif event.button == 3: # inference
-                    mode_flags = setMode(mode_flags, INFERENCE)
+                    setMode(mode_flags, INFERENCE)
                     print("on Self Driving")
                 continue # 次のイベントへスキップ
 
