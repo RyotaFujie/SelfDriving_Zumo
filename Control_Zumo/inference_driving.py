@@ -74,9 +74,10 @@ def main():
                 start = time.time()
 
             # get event
-            event = pygame.event.get()[0]
-            if event == None:
+            events = pygame.event.get()
+            if events == None:
                 continue
+            event = event[0]
 
             # switch driving mode
             if event.type == pygame.locals.JOYBUTTONDOWN:
