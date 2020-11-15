@@ -7,86 +7,86 @@ import threading
 
 
 ############################################################################################################
-# モデルの定義および学習に使用する
-import torch
-import torch.nn as nn
-import torch.optim as optim
-import torch.nn.functional as F
-from tqdm import tqdm   # 進捗状況をプログレスバーで表示する
-import time
+# # モデルの定義および学習に使用する
+# import torch
+# import torch.nn as nn
+# import torch.optim as optim
+# import torch.nn.functional as F
+# from tqdm import tqdm   # 進捗状況をプログレスバーで表示する
+# import time
 
-# 学習データの読み込みに使用する
-from torch.utils.data import DataLoader
-from torchvision import datasets, transforms
-import torchvision
-import os
-from pathlib import Path
-from PIL import Image
+# # 学習データの読み込みに使用する
+# from torch.utils.data import DataLoader
+# from torchvision import datasets, transforms
+# import torchvision
+# import os
+# from pathlib import Path
+# from PIL import Image
 
-# 学習後の可視化に使用する
-import numpy as np
-import matplotlib.pyplot as plt
-# スプライン補完を使用して滑らかに点を結ぶ
-from scipy.interpolate import InterpolatedUnivariateSpline
+# # 学習後の可視化に使用する
+# import numpy as np
+# import matplotlib.pyplot as plt
+# # スプライン補完を使用して滑らかに点を結ぶ
+# from scipy.interpolate import InterpolatedUnivariateSpline
 
 
-class MyLeNet(nn.Module):
-    def __init__(self):
-        super(MyLeNet, self).__init__()
-        #チャンネル数input_image_channelsの特徴マップを受け取って，チャンネル数6の特徴マップを出力
-        self.conv1 = nn.Conv2d(3, 3, kernel_size=(5, 5), stride=(1, 1))
-        self.conv2 = nn.Conv2d(3, 8, kernel_size=(5, 5), stride=(1, 1))
-        self.conv3 = nn.Conv2d(8, 16, kernel_size=(5, 5), stride=(1, 1))
-        self.max_pool = nn.MaxPool2d(kernel_size=(2, 2), stride=(2, 2)) #　最大値プーリング
-        self.bn1 = nn.BatchNorm2d(3)#　バッチ正規化
-        self.bn2 = nn.BatchNorm2d(8)# バッチ正規化
-        self.bn3 = nn.BatchNorm2d(16)#　バッチ正規化
-        self.fc1 = nn.Linear(4*6*16, 256)  # 線形変換
-        self.fc2 = nn.Linear(256, 64)
-        self.fc3 = nn.Linear(64, 10) # 出力数10で，交差エントロピーする
+# class MyLeNet(nn.Module):
+#     def __init__(self):
+#         super(MyLeNet, self).__init__()
+#         #チャンネル数input_image_channelsの特徴マップを受け取って，チャンネル数6の特徴マップを出力
+#         self.conv1 = nn.Conv2d(3, 3, kernel_size=(5, 5), stride=(1, 1))
+#         self.conv2 = nn.Conv2d(3, 8, kernel_size=(5, 5), stride=(1, 1))
+#         self.conv3 = nn.Conv2d(8, 16, kernel_size=(5, 5), stride=(1, 1))
+#         self.max_pool = nn.MaxPool2d(kernel_size=(2, 2), stride=(2, 2)) #　最大値プーリング
+#         self.bn1 = nn.BatchNorm2d(3)#　バッチ正規化
+#         self.bn2 = nn.BatchNorm2d(8)# バッチ正規化
+#         self.bn3 = nn.BatchNorm2d(16)#　バッチ正規化
+#         self.fc1 = nn.Linear(4*6*16, 256)  # 線形変換
+#         self.fc2 = nn.Linear(256, 64)
+#         self.fc3 = nn.Linear(64, 10) # 出力数10で，交差エントロピーする
 
-    def forward(self, x):
-        #https://qiita.com/poorko/items/c151ff4a827f114fe954
-        #結合の解説記事
-        x = F.relu(self.bn1(self.conv1(x)))
-        x = self.max_pool(x)
-        x = F.relu(self.bn2(self.conv2(x)))
-        x = self.max_pool(x)
-        x = F.relu(self.bn3(self.conv3(x)))
-        x = self.max_pool(x)
-        x = x.view(-1, self.num_flat_features(x))
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        y = self.fc3(x) #回帰
-        return y
+#     def forward(self, x):
+#         #https://qiita.com/poorko/items/c151ff4a827f114fe954
+#         #結合の解説記事
+#         x = F.relu(self.bn1(self.conv1(x)))
+#         x = self.max_pool(x)
+#         x = F.relu(self.bn2(self.conv2(x)))
+#         x = self.max_pool(x)
+#         x = F.relu(self.bn3(self.conv3(x)))
+#         x = self.max_pool(x)
+#         x = x.view(-1, self.num_flat_features(x))
+#         x = F.relu(self.fc1(x))
+#         x = F.relu(self.fc2(x))
+#         y = self.fc3(x) #回帰
+#         return y
   
-    def num_flat_features(self, x):
-        size = x.size()[1:]
-        num_features = 1
-        for s in size:
-            num_features *= s
-        return num_features
+#     def num_flat_features(self, x):
+#         size = x.size()[1:]
+#         num_features = 1
+#         for s in size:
+#             num_features *= s
+#         return num_features
 
 
-class MyInfernceDataset(torch.utils.data.Dataset):
-    IMG_EXTENSIONS = [".jpg", ".jpeg", ".png", ".bmp"]
+# class MyInfernceDataset(torch.utils.data.Dataset):
+#     IMG_EXTENSIONS = [".jpg", ".jpeg", ".png", ".bmp"]
 
-    def __init__(self, inference_img, transform=None):
-        self.img = inference_img
-        self.transform = transform
+#     def __init__(self, inference_img, transform=None):
+#         self.img = inference_img
+#         self.transform = transform
 
 
-    # obj[i]とインデックス指定の時に呼ばれるコール
-    def __getitem__(self, idx):
+#     # obj[i]とインデックス指定の時に呼ばれるコール
+#     def __getitem__(self, idx):
 
-        if self.transform:
-            out_data = self.transform(self.img)
+#         if self.transform:
+#             out_data = self.transform(self.img)
 
-        return out_data
+#         return out_data
 
-model = MyLeNet()
-model.load_state_dict(torch.load("model.pth"))
-model.eval() #推論モード
+# model = MyLeNet()
+# model.load_state_dict(torch.load("model.pth"))
+# model.eval() #推論モード
 
 ############################################################################################################
 
@@ -207,11 +207,11 @@ def main():
                     print(ctl)
 
             # self driving
-            elif mode_flags[INFERENCE] :
-                batch_size = 1  # バッチサイズを定義
-                transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-                inference_set = MyDataset(capture(cap), transform)
-                inference_loader = torch.utils.data.DataLoader(inference_set, batch_size, shuffle=False)
+            # elif mode_flags[INFERENCE] :
+            #     batch_size = 1  # バッチサイズを定義
+            #     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+            #     inference_set = MyDataset(capture(cap), transform)
+            #     inference_loader = torch.utils.data.DataLoader(inference_set, batch_size, shuffle=False)
 
 
             # serial to arduino
