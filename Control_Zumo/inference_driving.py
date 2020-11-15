@@ -73,6 +73,8 @@ def main():
             else:
                 start = time.time()
 
+            print(mode_flags)
+
             # get event
             events = pygame.event.get()
             if len(events) == 0:
