@@ -121,7 +121,7 @@ def main():
                         ctl = 88
                     ctl += throttle
                     ctl = int(ctl)
-                    print(ctl)
+                    # print(ctl)
                 continue # 次のイベントへスキップ
 
             # self driving
