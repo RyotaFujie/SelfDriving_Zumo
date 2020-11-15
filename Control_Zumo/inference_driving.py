@@ -78,8 +78,7 @@ def main():
             if len(events) == 0:
                 continue
             event = events[0]
-
-            print(mode_flags)
+            print(len(events))
 
             # switch driving mode
             if event.type == pygame.locals.JOYBUTTONDOWN:
@@ -127,8 +126,6 @@ def main():
 
             # self driving
             if mode_flags[INFERENCE] :
-                event.clear() # キュー内のイベントを削除
-
 
 
 
