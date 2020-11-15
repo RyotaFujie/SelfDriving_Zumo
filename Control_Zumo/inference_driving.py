@@ -14,7 +14,7 @@ def capture(cap, cont_capture, label):
         #cv2.imshow("test window", frame)
         cv2.imwrite(f'../dataset/Zumo_run01_{cont_capture}_{label}.jpeg', frame)
 
-def setMode(mode_flags, index)
+def setMode(mode_flags, index):
     # clear flag
     for mode in mode_falgs:
         mode = False
