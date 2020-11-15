@@ -85,15 +85,15 @@ def main():
                     exit()
 
                 elif event.button == 1: # nomal
-                    mode_flags = setMode(mod_flags, NOMAL)
+                    mode_flags = setMode(mode_flags, NOMAL)
                     print("on Nomal Driving")
 
                 elif event.button == 2: # learning (capture)
-                    mode_flags = setMode(mod_flags, LEARNING)
+                    mode_flags = setMode(mode_flags, LEARNING)
                     print("on capture")
 
                 elif event.button == 3: # inference
-                    mode_flags = setMode(mod_flags, INFERENCE)
+                    mode_flags = setMode(mode_flags, INFERENCE)
                     print("on Self Driving")
                 continue # 次のイベントへスキップ
 
@@ -119,6 +119,7 @@ def main():
                     if ctl == 99 :#直線になった瞬間に急加速してしまうのでスピード調整
                         ctl = 88
                     ctl += throttle
+                    ctl = int(ctl)
                     print(ctl)
                 continue # 次のイベントへスキップ
 
